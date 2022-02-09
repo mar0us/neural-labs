@@ -1,5 +1,4 @@
-from socket import getprotobyname
-
+import matplotlib.pyplot as plt
 
 class neuron():
     def __init__(self):
@@ -55,7 +54,28 @@ class neuron():
             return 1 if y > 0.5 else 0
 
 
-    # def drawGraph():
+    def drawGraph(self):
+        plt.scatter(
+            [self.sample[i][1] for i in range(4)],
+            [self.sample[i][2] for i in range(4)]
+        )
+
+        plt.xlabel("x1")
+        plt.ylabel("x2")
+        for i in range(4):
+            x, y = self.sample[i][1], self.sample[i][2]
+            kx = -1 if x == 0 else 4
+            ky = -1 if y == 0 else 4
+            plt.text(x - 0.02 * kx, y - 0.02 * ky, f"({x},{y})")
+
+        x1 = [self.sample[i][1] for i in range(4)]
+        x2 = [-(self.wi[1] / self.wi[2]) * x1[i] + (0.5 - self.wi[0] * self.sample[i][0]) / self.wi[2] for i in range(4)]
+
+        print(x1)
+        print(x2)
+        plt.plot(x1, x2)
+
+        plt.savefig("and_graph.png")
 
 
 
@@ -66,3 +86,4 @@ neu.train(500)
 yb = neu.getProbabilities(1, 1)
 y = neu.checkResult(yb)
 print(y)
+neu.drawGraph()
